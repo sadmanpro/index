@@ -1,7 +1,252 @@
- <html>
-    <body>
-        <p>
-            HELLO WORLD
-        </p>
-    </body>
- </html>
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mind-Blowing Portfolio</title>
+<style>
+  /* Reset & base */
+  * {
+    margin: 0; padding: 0; box-sizing: border-box;
+  }
+  body, html {
+    height: 100%; overflow-x: hidden;
+    background: #01010f;
+    color: #0ff;
+    font-family: 'Poppins', sans-serif;
+    overflow-y: scroll;
+  }
+  /* Neon text */
+  h1, h2 {
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #0ff;
+    text-shadow:
+      0 0 10px #0ff,
+      0 0 20px #0ff,
+      0 0 40px #0ff,
+      0 0 80px #0ff;
+  }
+  /* Container */
+  .container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 4rem 2rem;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+  }
+  /* Magnetic button */
+  .magnetic-btn {
+    display: inline-block;
+    margin-top: 3rem;
+    padding: 1.2rem 3rem;
+    border: 2px solid #0ff;
+    color: #0ff;
+    font-size: 1.4rem;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 40px;
+    background: transparent;
+    position: relative;
+    overflow: hidden;
+    transition: color 0.3s ease;
+    user-select: none;
+  }
+  .magnetic-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 300%; height: 300%;
+    background: rgba(0,255,255,0.2);
+    transform: translate(-50%, -50%) scale(0);
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+    z-index: -1;
+  }
+  .magnetic-btn:hover::before {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  /* Neon glow on hover */
+  .magnetic-btn:hover {
+    color: #fff;
+    text-shadow:
+      0 0 20px #0ff,
+      0 0 40px #0ff,
+      0 0 80px #0ff,
+      0 0 120px #0ff;
+  }
+  /* Particle canvas */
+  #particle-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: 0;
+    background: #01010f;
+  }
+  /* Scroll sections */
+  section {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  /* Animated neon text fade-in */
+  .neon-fade {
+    opacity: 0;
+    transform: translateY(40px);
+    animation: neonFadeIn 1s forwards;
+  }
+  @keyframes neonFadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      text-shadow:
+        0 0 10px #0ff,
+        0 0 20px #0ff,
+        0 0 40px #0ff,
+        0 0 80px #0ff;
+    }
+  }
+  /* Morphing blob */
+  #blob {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle at center, #0ff, transparent 70%);
+    filter: drop-shadow(0 0 20px #0ff);
+    border-radius: 50%;
+    transform: translateX(-50%);
+    animation: blobMorph 8s ease-in-out infinite;
+    mix-blend-mode: screen;
+    z-index: 1;
+  }
+  @keyframes blobMorph {
+    0%, 100% {
+      border-radius: 60% 40% 70% 30% / 40% 60% 30% 70%;
+    }
+    50% {
+      border-radius: 30% 60% 40% 70% / 60% 30% 70% 40%;
+    }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="particle-canvas"></canvas>
+
+<div id="blob"></div>
+
+<div class="container" style="position: relative; z-index: 10;">
+  <h1 class="neon-fade" style="animation-delay: 0.3s;">Hey, I'm Your Name</h1>
+  <h2 class="neon-fade" style="animation-delay: 1.5s;">Creative Developer & Designer</h2>
+  <button class="magnetic-btn" id="contactBtn">Get In Touch</button>
+</div>
+
+<section>
+  <h2 class="neon-fade" style="animation-delay: 2.5s;">My Projects will blow your mind!</h2>
+</section>
+
+<script>
+  // Magnetic Button effect
+  const btn = document.getElementById('contactBtn');
+  btn.addEventListener('mousemove', (e) => {
+    const rect = btn.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width/2;
+    const y = e.clientY - rect.top - rect.height/2;
+    btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px) scale(1.1)`;
+  });
+  btn.addEventListener('mouseleave', () => {
+    btn.style.transform = 'translate(0, 0) scale(1)';
+  });
+
+  // Particle background
+  const canvas = document.getElementById('particle-canvas');
+  const ctx = canvas.getContext('2d');
+  let w, h;
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  class Particle {
+    constructor() {
+      this.x = Math.random() * w;
+      this.y = Math.random() * h;
+      this.vx = (Math.random() - 0.5) * 0.5;
+      this.vy = (Math.random() - 0.5) * 0.5;
+      this.radius = Math.random() * 2 + 1;
+      this.alpha = 0.1 + Math.random() * 0.3;
+    }
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+
+      if(this.x < 0 || this.x > w) this.vx *= -1;
+      if(this.y < 0 || this.y > h) this.vy *= -1;
+    }
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(0, 255, 255, ${this.alpha})`;
+      ctx.shadowColor = '#0ff';
+      ctx.shadowBlur = 6;
+      ctx.fill();
+    }
+  }
+
+  const particles = [];
+  const PARTICLE_COUNT = 120;
+  for(let i=0; i<PARTICLE_COUNT; i++) {
+    particles.push(new Particle());
+  }
+
+  function connectParticles() {
+    for(let a = 0; a < PARTICLE_COUNT; a++) {
+      for(let b = a + 1; b < PARTICLE_COUNT; b++) {
+        let dx = particles[a].x - particles[b].x;
+        let dy = particles[a].y - particles[b].y;
+        let dist = Math.sqrt(dx*dx + dy*dy);
+        if(dist < 120) {
+          ctx.strokeStyle = `rgba(0, 255, 255, ${0.2 - dist/600})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(particles[a].x, particles[a].y);
+          ctx.lineTo(particles[b].x, particles[b].y);
+          ctx.shadowColor = '#0ff';
+          ctx.shadowBlur = 8;
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, w, h);
+    particles.forEach(p => {
+      p.update();
+      p.draw();
+    });
+    connectParticles();
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+
+  // Scroll triggered fade-in
+  const fadeElems = document.querySelectorAll('.neon-fade');
+  window.addEventListener('scroll', () => {
+    fadeElems.forEach(elem => {
+      const top = elem.getBoundingClientRect().top;
+      if(top < window.innerHeight * 0.8) {
+        elem.style.animationPlayState = 'running';
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
