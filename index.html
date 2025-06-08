@@ -3,29 +3,31 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title> Portfolio</title>
+<title>SADMAN - Portfolio</title>
 <style>
   /* Reset & base */
   * {
     margin: 0; padding: 0; box-sizing: border-box;
   }
-  body, html {
-    height: 100%; overflow-x: hidden;
-    background: #01010f;
-    color: #0ff;
-    font-family: 'Poppins', sans-serif;
-    overflow-y: scroll;
+  html, body {
+    height: auto; /* allow natural height */
+    overflow-y: auto;
   }
-  /* Neon text */
+  body {
+    min-height: 200vh; /* enough height for scroll */
+    background: linear-gradient(135deg, #1e1e2f, #2a2a3d);
+    color: #a0aec0; /* cool gray-blue */
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+  }
+  /* Headings with subtle glow */
   h1, h2 {
     font-weight: 900;
     text-transform: uppercase;
-    color: #0ff;
+    color: #4f81bd; /* professional blue */
     text-shadow:
-      0 0 10px #0ff,
-      0 0 20px #0ff,
-      0 0 40px #0ff,
-      0 0 80px #0ff;
+      0 0 4px #4f81bdaa,
+      0 0 10px #4f81bd77;
   }
   /* Container */
   .container {
@@ -41,8 +43,8 @@
     display: inline-block;
     margin-top: 3rem;
     padding: 1.2rem 3rem;
-    border: 2px solid #0ff;
-    color: #0ff;
+    border: 2px solid #4f81bd;
+    color: #4f81bd;
     font-size: 1.4rem;
     font-weight: 700;
     cursor: pointer;
@@ -50,7 +52,7 @@
     background: transparent;
     position: relative;
     overflow: hidden;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, box-shadow 0.3s ease;
     user-select: none;
   }
   .magnetic-btn::before {
@@ -58,7 +60,7 @@
     position: absolute;
     top: 50%; left: 50%;
     width: 300%; height: 300%;
-    background: rgba(0,255,255,0.2);
+    background: rgba(79, 129, 189, 0.2);
     transform: translate(-50%, -50%) scale(0);
     border-radius: 50%;
     transition: transform 0.3s ease;
@@ -67,14 +69,11 @@
   .magnetic-btn:hover::before {
     transform: translate(-50%, -50%) scale(1);
   }
-  /* Neon glow on hover */
   .magnetic-btn:hover {
     color: #fff;
-    text-shadow:
-      0 0 20px #0ff,
-      0 0 40px #0ff,
-      0 0 80px #0ff,
-      0 0 120px #0ff;
+    box-shadow:
+      0 0 10px #4f81bdaa,
+      0 0 20px #4f81bd77;
   }
   /* Particle canvas */
   #particle-canvas {
@@ -82,30 +81,31 @@
     top: 0; left: 0;
     width: 100vw; height: 100vh;
     z-index: 0;
-    background: #01010f;
+    background: transparent;
   }
   /* Scroll sections */
   section {
     min-height: 100vh;
+    padding: 4rem 2rem;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
   }
-  /* Animated neon text fade-in */
+  /* Animated text fade-in */
   .neon-fade {
     opacity: 0;
     transform: translateY(40px);
-    animation: neonFadeIn 1s forwards;
+    animation: fadeInUp 1s forwards;
+    animation-play-state: paused;
   }
-  @keyframes neonFadeIn {
+  @keyframes fadeInUp {
     to {
       opacity: 1;
       transform: translateY(0);
       text-shadow:
-        0 0 10px #0ff,
-        0 0 20px #0ff,
-        0 0 40px #0ff,
-        0 0 80px #0ff;
+        0 0 4px #4f81bdaa,
+        0 0 10px #4f81bd77;
     }
   }
   /* Morphing blob */
@@ -114,8 +114,8 @@
     top: 30%;
     left: 50%;
     width: 400px; height: 400px;
-    background: radial-gradient(circle at center, #0ff, transparent 70%);
-    filter: drop-shadow(0 0 20px #0ff);
+    background: radial-gradient(circle at center, #4f81bd44, transparent 70%);
+    filter: drop-shadow(0 0 20px #4f81bd88);
     border-radius: 50%;
     transform: translateX(-50%);
     animation: blobMorph 8s ease-in-out infinite;
@@ -145,7 +145,7 @@
 </div>
 
 <section>
-  <h2 class="neon-fade" style="animation-delay: 2.5s;">This is my first repo!</h2>
+  <h2 class="neon-fade" style="animation-delay: 2.5s;">My Projects will blow your mind!</h2>
 </section>
 
 <script>
@@ -191,8 +191,8 @@
     draw() {
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(0, 255, 255, ${this.alpha})`;
-      ctx.shadowColor = '#0ff';
+      ctx.fillStyle = `rgba(79, 129, 189, ${this.alpha})`;
+      ctx.shadowColor = '#4f81bd';
       ctx.shadowBlur = 6;
       ctx.fill();
     }
@@ -211,12 +211,12 @@
         let dy = particles[a].y - particles[b].y;
         let dist = Math.sqrt(dx*dx + dy*dy);
         if(dist < 120) {
-          ctx.strokeStyle = `rgba(0, 255, 255, ${0.2 - dist/600})`;
+          ctx.strokeStyle = `rgba(79, 129, 189, ${0.2 - dist/600})`;
           ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(particles[a].x, particles[a].y);
           ctx.lineTo(particles[b].x, particles[b].y);
-          ctx.shadowColor = '#0ff';
+          ctx.shadowColor = '#4f81bd';
           ctx.shadowBlur = 8;
           ctx.stroke();
         }
@@ -246,6 +246,9 @@
       }
     });
   });
+
+  // Also trigger fade-ins on load in case elements visible
+  window.dispatchEvent(new Event('scroll'));
 </script>
 
 </body>
